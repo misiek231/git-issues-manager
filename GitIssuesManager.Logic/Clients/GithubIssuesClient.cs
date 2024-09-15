@@ -5,15 +5,15 @@ using System.Net.Http.Json;
 
 namespace GitIssuesManager.Logic.Clients;
 
-public class GithubIssuesClient(IHttpClientFactory clientFactory)
+public class GithubIssuesClient(IHttpClientFactory clientFactory) : GitIssuesClient(clientFactory)
 {
-    private readonly IHttpClientFactory clientFactory = clientFactory;
+    protected override GitIssueClientType ClientType => GitIssueClientType.Github;
 
     public async Task<OneOf<ResultModel, Error>> CreateIssue(string owner, string repo, GithubUpdateIssueModel model)
     {
         //var client = SetupClient();
 
-        var client = clientFactory.CreateClient("GithubClient");
+        var client = GetClient();
 
         var response = await client.PostAsJsonAsync($"/repos/{owner}/{repo}/issues", model);
 
@@ -28,7 +28,7 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory)
 
     public async Task<OneOf<ResultModel, Error>> UpdateIssue(string owner, string repo, string issueNumber, GithubUpdateIssueModel model)
     {
-        var client = clientFactory.CreateClient("GithubClient");
+        var client = GetClient();
 
         var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", model);
 
@@ -44,7 +44,7 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory)
 
     public async Task<OneOf<ResultModel, Error>> CloseIssue(string owner, string repo, string issueNumber)
     {
-        var client = clientFactory.CreateClient("GithubClient");
+        var client = GetClient();
 
         var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", new CloseIssueModel());
 

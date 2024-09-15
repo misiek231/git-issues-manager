@@ -5,9 +5,14 @@ VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitIssuesManager.Api", "GitIssuesManager.Api\GitIssuesManager.Api.csproj", "{7777AD01-B257-4B4D-B5DC-C6055C3D0339}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitIssuesManager.Logic", "GitIssuesManager.Logic\GitIssuesManager.Logic.csproj", "{A6048419-7495-4713-9FE1-8D3B66F71A70}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitIssuesManager.Logic", "GitIssuesManager.Logic\GitIssuesManager.Logic.csproj", "{A6048419-7495-4713-9FE1-8D3B66F71A70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitIssuesManager.Logic.Test", "GitIssuesManager.Logic.Test\GitIssuesManager.Logic.Test.csproj", "{301FA5F5-29E4-4BFE-9F34-8DE75B0E504A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitIssuesManager.Logic.Test", "GitIssuesManager.Logic.Test\GitIssuesManager.Logic.Test.csproj", "{301FA5F5-29E4-4BFE-9F34-8DE75B0E504A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D4FAC33E-93D0-46C4-9FE6-8D06AE323B7C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

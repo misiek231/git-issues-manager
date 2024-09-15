@@ -6,13 +6,13 @@ using System.Net.Http.Json;
 
 namespace GitIssuesManager.Logic.Clients;
 
-public class GitlabIssuesClient(IHttpClientFactory clientFactory)
+public class GitlabIssuesClient(IHttpClientFactory clientFactory) : GitIssuesClient(clientFactory)
 {
-    private readonly IHttpClientFactory clientFactory = clientFactory;
+    protected override GitIssueClientType ClientType => GitIssueClientType.Gitlab;
 
     public async Task<OneOf<ResultModel, Error>> CreateIssue(string projectId, GitlabUpdateIssueModel model)
     {
-        var client = clientFactory.CreateClient("GitlabClient");
+        var client = GetClient();
 
         var query = QueryHelpers.AddQueryString($"/api/v4/projects/{projectId}/issues", model.AsDictionary());
 
@@ -29,7 +29,7 @@ public class GitlabIssuesClient(IHttpClientFactory clientFactory)
 
     public async Task<OneOf<ResultModel, Error>> UpdateIssue(string projectId, string issueId, GitlabUpdateIssueModel model)
     {
-        var client = clientFactory.CreateClient("GitlabClient");
+        var client = GetClient();
 
         var query = QueryHelpers.AddQueryString($"/api/v4/projects/{projectId}/issues/{issueId}", model.AsDictionary());
 
@@ -47,7 +47,7 @@ public class GitlabIssuesClient(IHttpClientFactory clientFactory)
 
     public async Task<OneOf<ResultModel, Error>> CloseIssue(string projectId, string issueId)
     {
-        var client = clientFactory.CreateClient("GitlabClient");
+        var client = GetClient();
 
         var response = await client.PutAsync($"/api/v4/projects/{projectId}/issues/{issueId}?state_event=close", null);
 
