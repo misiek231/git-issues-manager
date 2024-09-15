@@ -1,6 +1,46 @@
 @GitIssuesManager.Api_HostAddress = http://localhost:5055
 
-GET {{GitIssuesManager.Api_HostAddress}}/git/create
+# Creates new issues in chosen clients
+POST {{GitIssuesManager.Api_HostAddress}}/api/issues
 Accept: application/json
+Content-Type: application/json
+{
+    "Name": "test",
+    "Description": "Test",
+    "Github": {
+        "Owner": "misiek231",
+        "Repo": "git-issues-manager"
+    },
+    "Gitlab": {
+        "ProjectId": "test"
+    }
+}
+###
 
+# Updates issues in chosen clients
+PUT {{GitIssuesManager.Api_HostAddress}}/api/issues
+Accept: application/json
+Content-Type: application/json
+{
+    "Name": "test",
+    "Description": "Test",
+    "Gitlab": {
+        "ProjectId": "123"
+    }
+}
+###
+
+# Closes issues in chosen clients
+PUT {{GitIssuesManager.Api_HostAddress}}/api/issues/close
+Accept: application/json
+Content-Type: application/json
+{
+    "Name": "test",
+    "Description": "Test",
+    "Github": {
+        "Owner": "misiek231",
+        "Repo": "git-issues-manager",
+        "IssueNumber": "5"
+    }
+}
 ###

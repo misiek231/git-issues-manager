@@ -28,7 +28,7 @@ public class GithubIssueClientTests
 
     [Theory]
     [InlineData(HttpStatusCode.OK, typeof(ResultModel))]
-    [InlineData(HttpStatusCode.BadRequest, typeof(Error))]
+    [InlineData(HttpStatusCode.BadRequest, typeof(Error<string>))]
     public async Task CreateIssue_ShouldReturnProperResult_WhenRequestStatusCodeIs(HttpStatusCode statusCode, Type resultType)
     {
         // arrange
@@ -52,12 +52,12 @@ public class GithubIssueClientTests
         httpClientFactoryMock.Verify();
         httpMessageHandlerMock.VerifyNoOutstandingRequest();
         actual.Value.Should().BeAssignableTo(resultType);
-        actual.Switch(p => p.Should().BeEquivalentTo(requestResult), err => err.Should().BeAssignableTo<Error>());
+        actual.Switch(p => p.Should().BeEquivalentTo(requestResult), err => err.Should().BeAssignableTo<Error<string>>());
     }
 
     [Theory]
     [InlineData(HttpStatusCode.OK, typeof(ResultModel))]
-    [InlineData(HttpStatusCode.BadRequest, typeof(Error))]
+    [InlineData(HttpStatusCode.BadRequest, typeof(Error<string>))]
     public async Task UpdateIssue_ShouldReturnProperResult_WhenRequestStatusCodeIs(HttpStatusCode statusCode, Type resultType)
     {
         // arrange
@@ -82,12 +82,12 @@ public class GithubIssueClientTests
         httpClientFactoryMock.Verify();
         httpMessageHandlerMock.VerifyNoOutstandingRequest();
         actual.Value.Should().BeAssignableTo(resultType);
-        actual.Switch(p => p.Should().BeEquivalentTo(requestResult), err => err.Should().BeAssignableTo<Error>());
+        actual.Switch(p => p.Should().BeEquivalentTo(requestResult), err => err.Should().BeAssignableTo<Error<string>>());
     }
 
     [Theory]
     [InlineData(HttpStatusCode.OK, typeof(ResultModel))]
-    [InlineData(HttpStatusCode.BadRequest, typeof(Error))]
+    [InlineData(HttpStatusCode.BadRequest, typeof(Error<string>))]
     public async Task CloseIssue_ShouldReturnProperResult_WhenRequestStatusCodeIs(HttpStatusCode statusCode, Type resultType)
     {
         // arrange
@@ -111,6 +111,6 @@ public class GithubIssueClientTests
         httpClientFactoryMock.Verify();
         httpMessageHandlerMock.VerifyNoOutstandingRequest();
         actual.Value.Should().BeAssignableTo(resultType);
-        actual.Switch(p => p.Should().BeEquivalentTo(requestResult), err => err.Should().BeAssignableTo<Error>());
+        actual.Switch(p => p.Should().BeEquivalentTo(requestResult), err => err.Should().BeAssignableTo<Error<string>>());
     }
 }

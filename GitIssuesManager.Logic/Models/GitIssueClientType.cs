@@ -3,5 +3,5 @@
 public enum GitIssueClientType
 {
     Github,
-    Gitlab
+    Gitlab,
 }

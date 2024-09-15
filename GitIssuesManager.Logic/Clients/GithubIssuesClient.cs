@@ -9,48 +9,66 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory) : GitIssuesCli
 {
     protected override GitIssueClientType ClientType => GitIssueClientType.Github;
 
-    public async Task<OneOf<ResultModel, Error>> CreateIssue(string owner, string repo, GithubUpdateIssueModel model)
+    public async Task<OneOf<ResultModel, Error<string>>> CreateIssue(string owner, string repo, GithubUpdateIssueModel model)
     {
         var client = GetClient();
 
-        var response = await client.PostAsJsonAsync($"/repos/{owner}/{repo}/issues", model);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            // TODO: return proper error
-            return await response.Content.ReadFromJsonAsync<ResultModel>() ?? new ResultModel();
-        }
+            var response = await client.PostAsJsonAsync($"/repos/{owner}/{repo}/issues", model);
 
-        return new Error();
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<ResultModel>() ?? new ResultModel();
+            }
+
+            return new Error<string>(response.ReasonPhrase ?? "");
+        }
+        catch
+        {
+            return new Error<string>("Fatal error while requesting resource");
+        }
     }
 
-    public async Task<OneOf<ResultModel, Error>> UpdateIssue(string owner, string repo, string issueNumber, GithubUpdateIssueModel model)
+    public async Task<OneOf<ResultModel, Error<string>>> UpdateIssue(string owner, string repo, string issueNumber, GithubUpdateIssueModel model)
     {
         var client = GetClient();
 
-        var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", model);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            return await response.Content.ReadFromJsonAsync<ResultModel>() ?? new ResultModel();
-        }
+            var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", model);
 
-        return new Error();
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<ResultModel>() ?? new ResultModel();
+            }
+
+            return new Error<string>(response.ReasonPhrase ?? "");
+        }
+        catch
+        {
+            return new Error<string>("Fatal error while requesting resource");
+        }
     }
 
-    record CloseIssueModel(string State = "closed");
-
-    public async Task<OneOf<ResultModel, Error>> CloseIssue(string owner, string repo, string issueNumber)
+    public async Task<OneOf<ResultModel, Error<string>>> CloseIssue(string owner, string repo, string issueNumber)
     {
         var client = GetClient();
 
-        var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", new CloseIssueModel());
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            return await response.Content.ReadFromJsonAsync<ResultModel>() ?? new ResultModel();
-        }
+            var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", new { State = "closed" });
 
-        return new Error();
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<ResultModel>() ?? new ResultModel();
+            }
+
+            return new Error<string>(response.ReasonPhrase ?? "");
+        }
+        catch
+        {
+            return new Error<string>("Fatal error while requesting resource");
+        }
     }
 }

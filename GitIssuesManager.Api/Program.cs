@@ -1,11 +1,10 @@
 using GitIssuesManager.Api;
+using GitIssuesManager.Api.MinimalApiExtensions;
+using GitIssuesManager.Api.Services;
 using GitIssuesManager.Logic.Clients;
 using GitIssuesManager.Logic.Configuration;
-using GitIssuesManager.Logic.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
 
 builder.Services.AddOptions<GitClientsConfiguration>()
   .Bind(builder.Configuration)
@@ -14,22 +13,14 @@ builder.Services.AddOptions<GitClientsConfiguration>()
   .ValidateOnStart();
 
 builder.Services.RegisterGitHttpClients(builder.Configuration);
-
+builder.Services.AddEndpointDefinitions();
 builder.Services.AddScoped<GithubIssuesClient>();
+builder.Services.AddScoped<GitlabIssuesClient>();
+builder.Services.AddScoped<IssuesManagerService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-
+app.UseEndpointDefinitions("api");
 app.UseHttpsRedirection();
-
-app.MapGet("/git/create", async (GithubIssuesClient client) =>
-{
-    await client.CreateIssue("misiek231", "git-issues-manager", new GithubUpdateIssueModel
-    {
-        Title = "Title",
-        Body = "Body"
-    });
-});
 
 app.Run();
