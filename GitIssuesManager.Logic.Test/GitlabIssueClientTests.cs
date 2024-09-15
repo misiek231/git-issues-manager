@@ -13,19 +13,18 @@ using Xunit.Abstractions;
 
 namespace GitIssuesManager.Logic.Test;
 
-public class GithubIssueClientTests
+public class GitlabIssueClientTests
 {
-    private readonly string owner = "misiek231";
-    private readonly string repo = "git-issues-manager";
-    private readonly GitClientConfig config = new() { Url = "https://api.github.com" };
+    private readonly string projectId = "1";
+    private readonly GitClientConfig config = new() { Url = "https://gitlab.example.com" };
 
-    private readonly GithubIssuesClient sut;
+    private readonly GitlabIssuesClient sut;
     private readonly Mock<IHttpClientFactory> httpClientFactoryMock = new();
     private readonly MockHttpMessageHandler httpMessageHandlerMock = new();
 
-    public GithubIssueClientTests(ITestOutputHelper logger)
+    public GitlabIssueClientTests()
     {
-        sut = new GithubIssuesClient(httpClientFactoryMock.Object);
+        sut = new GitlabIssuesClient(httpClientFactoryMock.Object);
     }
 
     [Fact]
@@ -33,20 +32,20 @@ public class GithubIssueClientTests
     {
         // arrange
         var requestResult = new ResultModel() { Title = "test" };
-        var createModel = new GithubUpdateIssueModel { Title = "Test", Body = "Test" };
+        var createModel = new GitlabUpdateIssueModel { Title = "Issues with auth", Description = "Test description" };
 
-        httpMessageHandlerMock.When(HttpMethod.Post, $"https://api.github.com/repos/{owner}/{repo}/issues")
+        httpMessageHandlerMock.When(HttpMethod.Post, $"https://gitlab.example.com/api/v4/projects/{projectId}/issues?title=Issues%20with%20auth&description=Test%20description")
             .Respond(HttpStatusCode.OK, JsonContent.Create(requestResult));
 
         httpClientFactoryMock.Setup(p => p.CreateClient(It.IsAny<string>()))
             .Throws(new Exception("Invalid client name was provided"));
 
-        httpClientFactoryMock.Setup(p => p.CreateClient("GithubClient"))
+        httpClientFactoryMock.Setup(p => p.CreateClient("GitlabClient"))
             .Returns(new HttpClient(httpMessageHandlerMock) { BaseAddress = new Uri(config.Url!) })
             .Verifiable();
 
         // act 
-        var actual = await sut.CreateIssue(owner, repo, createModel);
+        var actual = await sut.CreateIssue(projectId, createModel);
 
         // assert
         httpClientFactoryMock.Verify();
@@ -60,20 +59,20 @@ public class GithubIssueClientTests
     {
         // arrange
         var requestResult = new ResultModel() { Title = "test" };
-        var createModel = new GithubUpdateIssueModel { Title = "Test", Body = "Test" };
+        var createModel = new GitlabUpdateIssueModel { Title = "Issues with auth", Description = "Test description" };
 
-        httpMessageHandlerMock.When(HttpMethod.Post, $"https://api.github.com/repos/{owner}/{repo}/issues")
-            .Respond(HttpStatusCode.BadRequest, JsonContent.Create(requestResult));
+        httpMessageHandlerMock.When(HttpMethod.Post, $"https://gitlab.example.com/api/v4/projects/{projectId}/issues?title=Issues%20with%20auth&description=Test%20description")
+           .Respond(HttpStatusCode.BadRequest, JsonContent.Create(requestResult));
 
         httpClientFactoryMock.Setup(p => p.CreateClient(It.IsAny<string>()))
             .Throws(new Exception("Invalid client name was provided"));
 
-        httpClientFactoryMock.Setup(p => p.CreateClient("GithubClient"))
+        httpClientFactoryMock.Setup(p => p.CreateClient("GitlabClient"))
             .Returns(new HttpClient(httpMessageHandlerMock) { BaseAddress = new Uri(config.Url!) })
             .Verifiable();
 
         // act 
-        var actual = await sut.CreateIssue(owner, repo, createModel);
+        var actual = await sut.CreateIssue(projectId, createModel);
 
         // assert
         httpClientFactoryMock.Verify();
@@ -86,22 +85,22 @@ public class GithubIssueClientTests
     public async Task UpdateIssue_ShouldReturnSuccessResult_WhenRequestStatusCodeIsSuccess()
     {
         // arrange
-        var issueNumber = "3";
+        var issueId = "3";
         var requestResult = new ResultModel() { Title = "test" };
-        var updateModel = new GithubUpdateIssueModel { Title = "Test-edit", Body = "Test-edit" };
+        var updateModel = new GitlabUpdateIssueModel { Title = "Issues with auth", Description = "Test description" };
 
-        httpMessageHandlerMock.When(HttpMethod.Patch, $"https://api.github.com/repos/{owner}/{repo}/issues/{issueNumber}")
-            .Respond(HttpStatusCode.OK, JsonContent.Create(requestResult));
+        httpMessageHandlerMock.When(HttpMethod.Put, $"https://gitlab.example.com/api/v4/projects/{projectId}/issues/{issueId}?title=Issues%20with%20auth&description=Test%20description")
+           .Respond(HttpStatusCode.OK, JsonContent.Create(requestResult));
 
         httpClientFactoryMock.Setup(p => p.CreateClient(It.IsAny<string>()))
             .Throws(new Exception("Invalid client name was provided"));
 
-        httpClientFactoryMock.Setup(p => p.CreateClient("GithubClient"))
+        httpClientFactoryMock.Setup(p => p.CreateClient("GitlabClient"))
             .Returns(new HttpClient(httpMessageHandlerMock) { BaseAddress = new Uri(config.Url!) })
             .Verifiable();
 
         // act 
-        var actual = await sut.UpdateIssue(owner, repo, issueNumber, updateModel);
+        var actual = await sut.UpdateIssue(projectId, issueId, updateModel);
 
         // assert
         httpClientFactoryMock.Verify();
@@ -114,22 +113,22 @@ public class GithubIssueClientTests
     public async Task UpdateIssue_ShouldReturnError_WhenRequestStatusCodeIsNotSuccess()
     {
         // arrange
-        var issueNumber = "3";
+        var issueId = "3";
         var requestResult = new ResultModel() { Title = "test" };
-        var updateModel = new GithubUpdateIssueModel { Title = "Test-edit", Body = "Test-edit" };
+        var updateModel = new GitlabUpdateIssueModel { Title = "Issues with auth", Description = "Test description" };
 
-        httpMessageHandlerMock.When(HttpMethod.Patch, $"https://api.github.com/repos/{owner}/{repo}/issues/{issueNumber}")
-            .Respond(HttpStatusCode.BadRequest, JsonContent.Create(requestResult));
+        httpMessageHandlerMock.When(HttpMethod.Put, $"https://gitlab.example.com/api/v4/projects/{projectId}/issues/{issueId}?title=Issues%20with%20auth&description=Test%20description")
+           .Respond(HttpStatusCode.BadRequest, JsonContent.Create(requestResult));
 
         httpClientFactoryMock.Setup(p => p.CreateClient(It.IsAny<string>()))
             .Throws(new Exception("Invalid client name was provided"));
 
-        httpClientFactoryMock.Setup(p => p.CreateClient("GithubClient"))
+        httpClientFactoryMock.Setup(p => p.CreateClient("GitlabClient"))
             .Returns(new HttpClient(httpMessageHandlerMock) { BaseAddress = new Uri(config.Url!) })
             .Verifiable();
 
         // act 
-        var actual = await sut.UpdateIssue(owner, repo, issueNumber, updateModel);
+        var actual = await sut.UpdateIssue(projectId, issueId, updateModel);
 
         // assert
         httpClientFactoryMock.Verify();
@@ -142,21 +141,21 @@ public class GithubIssueClientTests
     public async Task CloseIssue_ShouldReturnSuccessResult_WhenRequestStatusCodeIsSuccess()
     {
         // arrange
-        var issueNumber = "3";
+        var issueId = "3";
         var requestResult = new ResultModel() { Title = "test" };
 
-        httpMessageHandlerMock.When(HttpMethod.Patch, $"https://api.github.com/repos/{owner}/{repo}/issues/{issueNumber}")
-            .Respond(HttpStatusCode.OK, JsonContent.Create(requestResult));
+        httpMessageHandlerMock.When(HttpMethod.Put, $"https://gitlab.example.com/api/v4/projects/{projectId}/issues/{issueId}?state_event=close")
+           .Respond(HttpStatusCode.OK, JsonContent.Create(requestResult));
 
         httpClientFactoryMock.Setup(p => p.CreateClient(It.IsAny<string>()))
             .Throws(new Exception("Invalid client name was provided"));
 
-        httpClientFactoryMock.Setup(p => p.CreateClient("GithubClient"))
+        httpClientFactoryMock.Setup(p => p.CreateClient("GitlabClient"))
             .Returns(new HttpClient(httpMessageHandlerMock) { BaseAddress = new Uri(config.Url!) })
             .Verifiable();
 
         // act 
-        var actual = await sut.CloseIssue(owner, repo, issueNumber);
+        var actual = await sut.CloseIssue(projectId, issueId);
 
         // assert
         httpClientFactoryMock.Verify();
@@ -169,21 +168,21 @@ public class GithubIssueClientTests
     public async Task CloseIssue_ShouldReturnError_WhenRequestStatusCodeIsNotSuccess()
     {
         // arrange
-        var issueNumber = "3";
+        var issueId = "3";
         var requestResult = new ResultModel() { Title = "test" };
 
-        httpMessageHandlerMock.When(HttpMethod.Patch, $"https://api.github.com/repos/{owner}/{repo}/issues/{issueNumber}")
-            .Respond(HttpStatusCode.BadRequest, JsonContent.Create(requestResult));
+        httpMessageHandlerMock.When(HttpMethod.Put, $"https://gitlab.example.com/api/v4/projects/{projectId}/issues/{issueId}?state_event=close")
+           .Respond(HttpStatusCode.BadRequest, JsonContent.Create(requestResult));
 
         httpClientFactoryMock.Setup(p => p.CreateClient(It.IsAny<string>()))
             .Throws(new Exception("Invalid client name was provided"));
 
-        httpClientFactoryMock.Setup(p => p.CreateClient("GithubClient"))
+        httpClientFactoryMock.Setup(p => p.CreateClient("GitlabClient"))
             .Returns(new HttpClient(httpMessageHandlerMock) { BaseAddress = new Uri(config.Url!) })
             .Verifiable();
 
         // act 
-        var actual = await sut.CloseIssue(owner, repo, issueNumber);
+        var actual = await sut.CloseIssue(projectId, issueId);
 
         // assert
         httpClientFactoryMock.Verify();

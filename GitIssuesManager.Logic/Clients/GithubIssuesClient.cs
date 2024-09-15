@@ -1,7 +1,6 @@
 ﻿using GitIssuesManager.Logic.Models;
 using OneOf;
 using OneOf.Types;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
 namespace GitIssuesManager.Logic.Clients;
@@ -10,7 +9,7 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory)
 {
     private readonly IHttpClientFactory clientFactory = clientFactory;
 
-    public async Task<OneOf<ResultModel, Error>> CreateIssue(string owner, string repo, CreateIssueModel model)
+    public async Task<OneOf<ResultModel, Error>> CreateIssue(string owner, string repo, GithubUpdateIssueModel model)
     {
         //var client = SetupClient();
 
@@ -27,11 +26,11 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory)
         return new Error();
     }
 
-    public async Task<OneOf<ResultModel, Error>> UpdateIssue(string owner, string repo, string issueNumber, UpdateIssueModel model)
+    public async Task<OneOf<ResultModel, Error>> UpdateIssue(string owner, string repo, string issueNumber, GithubUpdateIssueModel model)
     {
         var client = clientFactory.CreateClient("GithubClient");
 
-        var response = await client.PostAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", model);
+        var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", model);
 
         if (response.IsSuccessStatusCode)
         {
@@ -47,7 +46,7 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory)
     {
         var client = clientFactory.CreateClient("GithubClient");
 
-        var response = await client.PostAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", new CloseIssueModel());
+        var response = await client.PatchAsJsonAsync($"/repos/{owner}/{repo}/issues/{issueNumber}", new CloseIssueModel());
 
         if (response.IsSuccessStatusCode)
         {
@@ -57,23 +56,23 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory)
         return new Error();
     }
 
-/*    private HttpClient SetupClient()
-    {
-        ArgumentException.ThrowIfNullOrEmpty(clientConfig.Url);
-        ArgumentException.ThrowIfNullOrEmpty(clientConfig.AuthToken);
-
-        var client = new HttpClient
+    /*    private HttpClient SetupClient()
         {
-            BaseAddress = new Uri(clientConfig.Url),
-        };
+            ArgumentException.ThrowIfNullOrEmpty(clientConfig.Url);
+            ArgumentException.ThrowIfNullOrEmpty(clientConfig.AuthToken);
 
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientConfig.AuthToken);
-        client.DefaultRequestHeaders.Accept.Clear();
-        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+            var client = new HttpClient
+            {
+                BaseAddress = new Uri(clientConfig.Url),
+            };
 
-        client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
-        client.DefaultRequestHeaders.Add("User-Agent", "git-issues-manager");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientConfig.AuthToken);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
 
-        return client;
-    }*/
+            client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
+            client.DefaultRequestHeaders.Add("User-Agent", "git-issues-manager");
+
+            return client;
+        }*/
 }
