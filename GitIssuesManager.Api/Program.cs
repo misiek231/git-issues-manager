@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOptions<GitClientsConfiguration>()
   .Bind(builder.Configuration)
   .ValidateDataAnnotations()
+  .Validate(p => p.Validate(), "Not all client types are configured in app settings")
   .ValidateOnStart();
 
 builder.Services.RegisterGitHttpClients(builder.Configuration);
@@ -22,11 +23,6 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
 app.MapGet("/git/create", async (GithubIssuesClient client) =>
 {
     await client.CreateIssue("misiek231", "git-issues-manager", new GithubUpdateIssueModel
@@ -37,8 +33,3 @@ app.MapGet("/git/create", async (GithubIssuesClient client) =>
 });
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

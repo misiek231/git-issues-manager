@@ -11,8 +11,6 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory) : GitIssuesCli
 
     public async Task<OneOf<ResultModel, Error>> CreateIssue(string owner, string repo, GithubUpdateIssueModel model)
     {
-        //var client = SetupClient();
-
         var client = GetClient();
 
         var response = await client.PostAsJsonAsync($"/repos/{owner}/{repo}/issues", model);

@@ -22,4 +22,8 @@ public class GitClientsConfiguration
     [ValidateEnumeratedItems]
     public IEnumerable<GitClientConfiguration> MyOptionsValues => GitClients.Values;
 
+    public bool Validate()
+    {
+        return Enum.GetValues<GitIssueClientType>().All(GitClients.ContainsKey);
+    }
 }
