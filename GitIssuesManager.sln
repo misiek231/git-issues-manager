@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitIssuesManager.Api", "GitIssuesManager.Api\GitIssuesManager.Api.csproj", "{7777AD01-B257-4B4D-B5DC-C6055C3D0339}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GitIssuesManager.Api", "GitIssuesManager.Api\GitIssuesManager.Api.csproj", "{7777AD01-B257-4B4D-B5DC-C6055C3D0339}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitIssuesManager.Logic", "GitIssuesManager.Logic\GitIssuesManager.Logic.csproj", "{A6048419-7495-4713-9FE1-8D3B66F71A70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitIssuesManager.Logic.Test", "GitIssuesManager.Logic.Test\GitIssuesManager.Logic.Test.csproj", "{301FA5F5-29E4-4BFE-9F34-8DE75B0E504A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{7777AD01-B257-4B4D-B5DC-C6055C3D0339}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7777AD01-B257-4B4D-B5DC-C6055C3D0339}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7777AD01-B257-4B4D-B5DC-C6055C3D0339}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6048419-7495-4713-9FE1-8D3B66F71A70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6048419-7495-4713-9FE1-8D3B66F71A70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6048419-7495-4713-9FE1-8D3B66F71A70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6048419-7495-4713-9FE1-8D3B66F71A70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{301FA5F5-29E4-4BFE-9F34-8DE75B0E504A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{301FA5F5-29E4-4BFE-9F34-8DE75B0E504A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{301FA5F5-29E4-4BFE-9F34-8DE75B0E504A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{301FA5F5-29E4-4BFE-9F34-8DE75B0E504A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
