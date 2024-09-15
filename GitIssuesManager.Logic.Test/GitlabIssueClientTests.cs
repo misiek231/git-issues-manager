@@ -13,7 +13,7 @@ namespace GitIssuesManager.Logic.Test;
 public class GitlabIssueClientTests
 {
     private readonly string projectId = "1";
-    private readonly GitClientConfig config = new() { Url = "https://gitlab.example.com", AuthToken = "Empty" };
+    private readonly GitClientConfiguration config = new() { Url = "https://gitlab.example.com", AuthToken = "Empty" };
     private readonly string httpClientName = GitIssueClientType.Gitlab.ToString();
 
     private readonly GitlabIssuesClient sut;

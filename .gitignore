@@ -396,4 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-GitIssuesManager.Api/appsettings.json
+GitIssuesManager.Api/appsettings.Development.json

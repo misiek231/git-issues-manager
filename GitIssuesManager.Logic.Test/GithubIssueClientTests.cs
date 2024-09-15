@@ -15,7 +15,7 @@ public class GithubIssueClientTests
     private readonly string owner = "misiek231";
     private readonly string repo = "git-issues-manager";
     private readonly string httpClientName = GitIssueClientType.Github.ToString();
-    private readonly GitClientConfig config = new() { Url = "https://api.github.com", AuthToken = "Empty" };
+    private readonly GitClientConfiguration config = new() { Url = "https://api.github.com", AuthToken = "Empty" };
 
     private readonly GithubIssuesClient sut;
     private readonly Mock<IHttpClientFactory> httpClientFactoryMock = new();

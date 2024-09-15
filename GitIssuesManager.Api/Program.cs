@@ -1,12 +1,20 @@
 using GitIssuesManager.Api;
+using GitIssuesManager.Logic.Clients;
+using GitIssuesManager.Logic.Configuration;
+using GitIssuesManager.Logic.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddOptions<GitClientsConfiguration>()
+  .Bind(builder.Configuration)
+  .ValidateDataAnnotations()
+  .ValidateOnStart();
 
 builder.Services.RegisterGitHttpClients(builder.Configuration);
 
+builder.Services.AddScoped<GithubIssuesClient>();
 
 var app = builder.Build();
 
@@ -19,17 +27,13 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/git/create", async (GithubIssuesClient client) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    await client.CreateIssue("misiek231", "git-issues-manager", new GithubUpdateIssueModel
+    {
+        Title = "Title",
+        Body = "Body"
+    });
 });
 
 app.Run();
