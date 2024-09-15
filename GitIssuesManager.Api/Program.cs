@@ -12,7 +12,7 @@ builder.Services.AddOptions<GitClientsConfiguration>()
   .Validate(p => p.Validate(), "Not all client types are configured in app settings")
   .ValidateOnStart();
 
-builder.Services.RegisterGitHttpClients(builder.Configuration);
+builder.Services.RegisterGitHttpClients();
 builder.Services.AddEndpointDefinitions();
 builder.Services.AddScoped<GithubIssuesClient>();
 builder.Services.AddScoped<GitlabIssuesClient>();

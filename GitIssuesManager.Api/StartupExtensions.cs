@@ -7,7 +7,7 @@ namespace GitIssuesManager.Api;
 
 public static class StartupExtensions
 {
-    public static IServiceCollection RegisterGitHttpClients(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterGitHttpClients(this IServiceCollection services)
     {
         var clientTypes = Enum.GetValues<GitIssueClientType>();
 
