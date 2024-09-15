@@ -2,14 +2,11 @@ using FluentAssertions;
 using GitIssuesManager.Logic.Clients;
 using GitIssuesManager.Logic.Configuration;
 using GitIssuesManager.Logic.Models;
-using Microsoft.Extensions.Logging;
 using Moq;
-using OneOf;
 using OneOf.Types;
 using RichardSzalay.MockHttp;
 using System.Net;
 using System.Net.Http.Json;
-using Xunit.Abstractions;
 
 namespace GitIssuesManager.Logic.Test;
 
@@ -18,7 +15,7 @@ public class GithubIssueClientTests
     private readonly string owner = "misiek231";
     private readonly string repo = "git-issues-manager";
     private readonly string httpClientName = GitIssueClientType.Github.ToString();
-    private readonly GitClientConfig config = new() { Url = "https://api.github.com" };
+    private readonly GitClientConfig config = new() { Url = "https://api.github.com", AuthToken = "Empty" };
 
     private readonly GithubIssuesClient sut;
     private readonly Mock<IHttpClientFactory> httpClientFactoryMock = new();

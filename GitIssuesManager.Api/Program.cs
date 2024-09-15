@@ -1,6 +1,12 @@
+using GitIssuesManager.Api;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+
+builder.Services.RegisterGitHttpClients(builder.Configuration);
+
 
 var app = builder.Build();
 

@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GitIssuesManager.Logic\GitIssuesManager.Logic.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -55,24 +55,4 @@ public class GithubIssuesClient(IHttpClientFactory clientFactory) : GitIssuesCli
 
         return new Error();
     }
-
-    /*    private HttpClient SetupClient()
-        {
-            ArgumentException.ThrowIfNullOrEmpty(clientConfig.Url);
-            ArgumentException.ThrowIfNullOrEmpty(clientConfig.AuthToken);
-
-            var client = new HttpClient
-            {
-                BaseAddress = new Uri(clientConfig.Url),
-            };
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", clientConfig.AuthToken);
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
-
-            client.DefaultRequestHeaders.Add("X-GitHub-Api-Version", "2022-11-28");
-            client.DefaultRequestHeaders.Add("User-Agent", "git-issues-manager");
-
-            return client;
-        }*/
 }

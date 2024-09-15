@@ -2,22 +2,18 @@ using FluentAssertions;
 using GitIssuesManager.Logic.Clients;
 using GitIssuesManager.Logic.Configuration;
 using GitIssuesManager.Logic.Models;
-using Microsoft.Extensions.Logging;
 using Moq;
-using OneOf;
 using OneOf.Types;
 using RichardSzalay.MockHttp;
 using System.Net;
 using System.Net.Http.Json;
-using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace GitIssuesManager.Logic.Test;
 
 public class GitlabIssueClientTests
 {
     private readonly string projectId = "1";
-    private readonly GitClientConfig config = new() { Url = "https://gitlab.example.com" };
+    private readonly GitClientConfig config = new() { Url = "https://gitlab.example.com", AuthToken = "Empty" };
     private readonly string httpClientName = GitIssueClientType.Gitlab.ToString();
 
     private readonly GitlabIssuesClient sut;
